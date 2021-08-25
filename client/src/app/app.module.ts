@@ -3,13 +3,17 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { MemberlistComponent } from './members/memberlist/memberlist.component';
+import { MemberlistComponent } from './members/memberlist.component';
+import { MemberCardComponent } from './member-card/member-card.component';
+import { JwtInterceptor } from 'interceptors/jwt.interceptor';
+import { MemberPageComponent } from './member-page/member-page.component';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +22,8 @@ import { MemberlistComponent } from './members/memberlist/memberlist.component';
     HomeComponent,
     RegisterComponent,
     MemberlistComponent,
+    MemberCardComponent,
+    MemberPageComponent,
 
   ],
   imports: [
@@ -27,7 +33,7 @@ import { MemberlistComponent } from './members/memberlist/memberlist.component';
     BrowserAnimationsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
