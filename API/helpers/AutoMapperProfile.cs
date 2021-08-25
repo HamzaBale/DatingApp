@@ -1,4 +1,5 @@
 using System.Linq;
+using API.Controllers;
 using API.DTO;
 using API.Entities;
 using API.Extensions;
@@ -14,6 +15,8 @@ namespace API.helpers
             .ForMember(mem => mem.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).Url))
             .ForMember(mem => mem.age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo,PhotoDto>();
+       
+
         }
     }
 }

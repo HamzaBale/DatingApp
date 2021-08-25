@@ -59,5 +59,15 @@ namespace API.Controllers
         var membertemp = _autoMapper.Map<memberDto>(user);
         return membertemp;
             }
+
+    [HttpPost("update")]
+       public async Task<ActionResult<memberDto>> UpdateUser(UpdateDto member){
+           
+        var user = await _repo.GetUserByUsernameAsync(member.OldUsername);
+        if(member.username != "") user.UserName = member.username;
+        if(member.introduction != "") user.Introduction = member.introduction;
+        var membertemp = _autoMapper.Map<memberDto>(user);
+        return membertemp;
+            }
     }
 }

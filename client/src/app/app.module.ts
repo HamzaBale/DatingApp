@@ -13,6 +13,7 @@ import { MemberlistComponent } from './members/memberlist.component';
 import { MemberCardComponent } from './member-card/member-card.component';
 import { JwtInterceptor } from 'interceptors/jwt.interceptor';
 import { MemberPageComponent } from './member-page/member-page.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { MemberPageComponent } from './member-page/member-page.component';
     MemberlistComponent,
     MemberCardComponent,
     MemberPageComponent,
+    UpdateUserComponent,
 
   ],
   imports: [

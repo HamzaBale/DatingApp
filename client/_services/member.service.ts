@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UpdateMember } from 'src/app/update-user/update-user.component';
 import { Member } from 'src/app/_models/member';
 import { environment } from 'src/environments/environment';
 
@@ -27,6 +28,11 @@ export class MemberService {
 
   public GetMember(username:string){
     return this.http.get<Member>(this.BaseUrl+"users/"+username);
+  }
+
+  public UpdateData(member: UpdateMember){
+
+      return this.http.post<Member>(this.BaseUrl+"users/update",member);
   }
 
 }
