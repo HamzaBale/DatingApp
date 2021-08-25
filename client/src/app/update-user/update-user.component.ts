@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { AccountService } from '_services/account.service';
 import { MemberService } from '_services/member.service';
+import { User } from '_types/User';
 import { Member } from '../_models/member';
 
 export interface UpdateMember{
-  OldUsername:string,
   introduction:string,
   username:string
 }
@@ -17,23 +17,20 @@ export interface UpdateMember{
 })
 export class UpdateUserComponent implements OnInit {
 
-  member:UpdateMember = {
-    OldUsername:"",
-    introduction:"",
-    username:""
-  };
+  member:Member;
+  user: User;
 
   constructor(private memberservice:MemberService, private accountservice: AccountService) { }
   
   ngOnInit(): void {
-    console.log("on init")
-    this.accountservice.currentUser$.pipe(take(1)).subscribe(x =>{this.member.OldUsername =  x.userName;});
-
+ 
+    this.accountservice.currentUser$.pipe(take(1)).subscribe(x =>{ this.user =  x;});
+   this.memberservice.GetMember(this.user.userName).subscribe(x =>  this.member = x);
   }
 
   onSubmit(){
       
-      this.memberservice.UpdateData(this.member).subscribe(data=> console.log(data));
-    
+      this.memberservice.UpdateData(this.member).subscribe(data=> console.log("buon fine"));
+      this.user.userName = this.member.username;
   }
 }

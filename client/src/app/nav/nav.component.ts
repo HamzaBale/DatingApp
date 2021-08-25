@@ -24,9 +24,9 @@ export class NavComponent implements OnInit {
 
   login(){
     this.accountService.login(this.model).subscribe(res => {
-      console.log(res); 
+      
       this.loggedIn = true;
-      this.accountService.currentUser$.subscribe(res => console.log(res));
+
     }
     );    
     this.cancelRegistration.emit(true);

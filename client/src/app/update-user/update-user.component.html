@@ -1,5 +1,5 @@
 
-<h1 *ngIf="member" style="margin-top: 200px;">{{member.OldUsername}}</h1>
+<h1 *ngIf="user" style="margin-top: 200px;">{{user.userName}}</h1>
 <form (ngSubmit)="onSubmit()" #form="ngForm" style="margin-top:100px">
     <input type="text" placeholder="Set New UserName"  [(ngModel)]="member.username" name="username" >
     <input type="text" placeholder="Set New IntroDuction" [(ngModel)]="member.introduction" name="introduction" >

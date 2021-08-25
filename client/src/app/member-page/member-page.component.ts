@@ -17,10 +17,10 @@ export class MemberPageComponent implements OnInit {
   }
 
   GetMember(){
-    console.log(this.route.snapshot.paramMap.get("username"));
+    
     this.memberservice.GetMember(this.route.snapshot.paramMap.get("username")).subscribe(
       user=> {this.member = user
-      console.log(user);}
+      }
     )
   }
 

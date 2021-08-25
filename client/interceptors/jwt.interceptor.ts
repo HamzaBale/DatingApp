@@ -23,23 +23,17 @@ export class JwtInterceptor implements HttpInterceptor {
     let currentUser:User;
 
 
-      this.accountservice.currentUser$.pipe(take(1)).subscribe(
-       
-        user =>{currentUser = user;
-          console.log(user);}
-    );
+      this.accountservice.currentUser$.pipe(take(1)).subscribe( 
+        user =>{currentUser = user;});
     if(currentUser){
-      console.log(currentUser);
+      
      request = request.clone({
       setHeaders:{
         Authorization:"Bearer "+currentUser.token
       }
     })
-
   }
-
-
-
-    return next.handle(request);
+ 
+  return next.handle(request);
   }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTO;
@@ -60,14 +61,18 @@ namespace API.Controllers
         return membertemp;
             }
 
-    [HttpPost("update")]
-       public async Task<ActionResult<memberDto>> UpdateUser(UpdateDto member){
-           
-        var user = await _repo.GetUserByUsernameAsync(member.OldUsername);
-        if(member.username != "") user.UserName = member.username;
-        if(member.introduction != "") user.Introduction = member.introduction;
-        var membertemp = _autoMapper.Map<memberDto>(user);
-        return membertemp;
-            }
+
+    [HttpPut]
+    public async Task<ActionResult> UpdateUserPut(UpdateDto member){
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //prende lo username del user connesso con il server
+        //Attraverso il TOKEN inviato insieme alla risposta http.
+        var user = await _repo.GetUserByUsernameAsync(username);
+         _autoMapper.Map(member, user);
+        _repo.Update(user);
+        if( await _repo.SaveAllAsync()) return NoContent();
+
+        return BadRequest("Something went wrong");
+
+    }
     }
 }

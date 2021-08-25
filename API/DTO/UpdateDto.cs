@@ -2,7 +2,7 @@ namespace API.Controllers
 {
     public class UpdateDto
     {   
-        public string OldUsername { get; set; }
+     
 
         public string username { get; set; }
 
