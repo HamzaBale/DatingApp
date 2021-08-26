@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { Member } from 'src/app/_models/member';
 import { MemberService } from '_services/member.service';
 
@@ -14,6 +14,7 @@ export class MemberlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetMembers();
+    console.log();
   }
 
   public GetMembers(){

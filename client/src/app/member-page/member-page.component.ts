@@ -23,5 +23,8 @@ export class MemberPageComponent implements OnInit {
       }
     )
   }
+  picChanged(){
+    this.ngOnInit();
+  }
 
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Extensions;
 using API.helpers;
 using API.Interfaces;
 using API.Middleware;
@@ -37,32 +38,17 @@ namespace API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) //usato per injectare servizi in altre classi dell'app
-        {
-
+        {   
+            services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
+            
             services.AddControllers();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors();
+            services.StartUpExten(_config);
 
-            services.AddScoped<IUserRepository, UserRepository>();//rendo disponibile a tutte le classi dell'applicazione
-            //un interfaccia e la sua implementazione. La injecto nel costruttore tramite l'interfaccia
-            services.AddScoped<ITokenService, TokenService>();//serve per inject TokenService all'interno di un controller
-            //verrà usata dentro il metodo login del AccountController
-
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
-
-                options.TokenValidationParameters = new TokenValidationParameters {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                };
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

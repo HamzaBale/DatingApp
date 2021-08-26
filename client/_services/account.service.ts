@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router} from '@angular/router';
 import {ReplaySubject } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -14,15 +15,23 @@ export class AccountService {
 
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private router:Router) { }
 
-  login(user:User){
-    console.log(user);
+
+  register(user){
+    return this.http.post(this.baseUrl+"Account/register",user);
+  }
+
+
+
+  login(user){
+
     return this.http.post(this.baseUrl+"Account/login",user).pipe(
       map((response:User)=>{ 
         if(response!= null) {
           localStorage.setItem('user',JSON.stringify(response));
           this.currentUserSource.next(response);
+          console.log(response);
       }
       }
       )
@@ -36,5 +45,8 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.router.navigate(["home"]);
   }
+
+
 }

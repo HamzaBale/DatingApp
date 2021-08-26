@@ -14,6 +14,8 @@ import { MemberCardComponent } from './member-card/member-card.component';
 import { JwtInterceptor } from 'interceptors/jwt.interceptor';
 import { MemberPageComponent } from './member-page/member-page.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
+import { AppPhotoComponent } from './app-photo/app-photo.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { UpdateUserComponent } from './update-user/update-user.component';
     MemberCardComponent,
     MemberPageComponent,
     UpdateUserComponent,
+    AppPhotoComponent,
 
   ],
   imports: [
@@ -33,9 +36,13 @@ import { UpdateUserComponent } from './update-user/update-user.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    FileUploadModule 
+    
   ],
   providers: [{provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

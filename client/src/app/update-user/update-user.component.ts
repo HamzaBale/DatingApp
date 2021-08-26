@@ -20,7 +20,7 @@ export class UpdateUserComponent implements OnInit {
   member:Member;
   user: User;
 
-  constructor(private memberservice:MemberService, private accountservice: AccountService) { }
+  constructor(private memberservice:MemberService, public accountservice: AccountService) { }
   
   ngOnInit(): void {
  

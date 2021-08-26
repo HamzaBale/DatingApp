@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppPhotoComponent } from './app-photo/app-photo.component';
 import { HomeComponent } from './home/home.component';
 import { MemberPageComponent } from './member-page/member-page.component';
 import { MemberlistComponent } from './members/memberlist.component';
@@ -9,8 +10,9 @@ import { AuthenticationGuard } from './_guards/authentication.guard';
 const routes: Routes = [
     {path:"", component:HomeComponent},
     {path:"matches", component:MemberlistComponent, canActivate:[AuthenticationGuard]},
-    {path:"home/:username", component:MemberPageComponent,canActivate:[AuthenticationGuard]},
+    {path:"member/:username", component:MemberPageComponent,canActivate:[AuthenticationGuard]},
     {path:"memberedit", component:UpdateUserComponent,canActivate:[AuthenticationGuard]},
+    {path:"update-photo/:username", component:AppPhotoComponent,canActivate:[AuthenticationGuard]},
     {path:"**", component:HomeComponent, pathMatch:"full"}
    
 ];

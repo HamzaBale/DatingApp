@@ -1,10 +1,13 @@
 <p style="margin-top:100px; margin-left: 150px;" *ngIf="member" class="col-3">{{member.knownAs}}</p>
-<div class="col-3">
-   <img src="{{member.photoUrl}}" class="card-img-top img-thumbnail">
+<div class="row" *ngIf="member">
+<div class="col">
+   
+   <img src="{{member.photoUrl}}" >
    <div class="card-body">
     <div><p>{{member.introduction}}</p></div>
     <div>{{member.age}}</div>
     <div>{{member.city}}</div>
    </div>
-  
+   <app-app-photo [member] = "member" (picChanged)="picChanged()" ></app-app-photo>
+   </div>
 </div>

@@ -32,6 +32,7 @@ export class MemberService {
    return this.http.get<Member[]>(this.BaseUrl+"users").pipe(
      map(users => 
                 {this.members = users;
+                  console.log(users);
                  return users;
                 }));
   }
@@ -41,18 +42,21 @@ export class MemberService {
     if(member !== undefined) return of(member);
 
     return this.http.get<Member>(this.BaseUrl+"users/"+username).pipe(
-      map(user =>{ this.members.push(user);
+      map(user =>{ 
                     return user;
       })
     );
   }
 
   public UpdateData(member: Member){
-      return this.http.put<Member>(this.BaseUrl+"users",member).pipe(
-        map(() => {
-          console.log(this.members.indexOf(member));
-        })
-      );
+      return this.http.put<Member>(this.BaseUrl+"users",member).pipe();
   }
 
+  public SetMainPhoto(photoId){
+    this.members.find(x => x.photoUrl = x.photos.find(s => s.id === photoId).url);
+    return this.http.put(this.BaseUrl+"users/main-photo/"+photoId,photoId);
+      
+  }
+
+  
 }
