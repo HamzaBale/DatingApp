@@ -5,6 +5,7 @@ import {ReplaySubject } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '_types/User';
+import { MemberService } from './member.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +16,7 @@ export class AccountService {
 
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http:HttpClient, private router:Router) { }
+  constructor(private http:HttpClient, private router:Router, private memberservice:MemberService) { }
 
 
   register(user){
@@ -46,6 +47,7 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
     this.router.navigate(["home"]);
+    this.memberservice.DeleteLocalMembers();
   }
 
 

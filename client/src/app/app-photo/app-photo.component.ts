@@ -21,7 +21,7 @@ export class AppPhotoComponent implements OnInit {
 
   ngOnInit(): void {
     let token;
-     this.accountservice.currentUser$.subscribe(x => token = x.token);
+     this.accountservice.currentUser$.subscribe(x => token = x?.token);
         this.Uploader = new FileUploader({
           url:this.baseUrl+"users/add-photo",
           authToken:"Bearer " + token,

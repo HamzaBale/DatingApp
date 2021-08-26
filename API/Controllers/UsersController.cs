@@ -130,7 +130,18 @@ namespace API.Controllers
                 return NoContent();
            
             }
+            
+            [HttpDelete("{photoId}")]
+            public async Task<ActionResult<bool>> DeletePhotoById(int photoId){
 
+                var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
+                var photo  = user.Photos.FirstOrDefault(x=> x.Id == photoId);
+                user.Photos.Remove(photo);
+                if(photo?.IsMain == true) user.Photos.FirstOrDefault(x=> x.Id != photoId).IsMain = true;
+                  _repo.Update(user);
+                 return  await _repo.SaveAllAsync();
+
+            }
 
     }
 }

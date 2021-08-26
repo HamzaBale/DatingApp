@@ -53,9 +53,12 @@ export class MemberService {
   }
 
   public SetMainPhoto(photoId){
-    this.members.find(x => x.photoUrl = x.photos.find(s => s.id === photoId).url);
+    console.log(this.members.find(x => x.photoUrl = x.photos.find(s => s.id === photoId).url));
     return this.http.put(this.BaseUrl+"users/main-photo/"+photoId,photoId);
       
+  }
+  public DeleteLocalMembers(){
+    this.members = [];
   }
 
   
