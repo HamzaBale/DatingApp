@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -6,6 +7,7 @@ using API.Data;
 using API.DTO;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +19,12 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
-        private   readonly IUserRepository _repo;
+        private readonly IUserRepository _repo;
+        private readonly IMapper _automapper;
 
-        public AccountController(DataContext context, ITokenService tokenService, IUserRepository repo) //caso di injectoon serve per comunicare con il databse
+        public AccountController(DataContext context, ITokenService tokenService, IUserRepository repo, IMapper autoMapper) //caso di injectoon serve per comunicare con il databse
         {
+            _automapper = autoMapper;
             _context = context;
             _tokenService = tokenService;
             _repo = repo;
@@ -28,12 +32,16 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> register(RegisterDTO register)
         {
-            if (await this.IsPresent(register.name)) return BadRequest("Username already exists");
+            if (await this.IsPresent(register.username)) return BadRequest("Username already exists");
             AppUser user = new AppUser();
             using var hmac = new HMACSHA512();
-            user.UserName = register.name.ToLower();
+            user.UserName = register.username.ToLower();
             user.passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.password));
             user.passwordSalt = hmac.Key;
+            user.KnownAs = register.knownAs;
+            user.DateOfBirth = new DateTime().ToLocalTime();
+            user.City = register.City;
+            user.Country = register.country;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 

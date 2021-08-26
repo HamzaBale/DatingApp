@@ -1,14 +1,22 @@
 <div style="margin-top: 200px;" >
     <form [formGroup]='registerForm' (ngSubmit)="onSubmit()">
    
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
       </form>
 </div>
 <app-formservice [formControl]='registerForm.controls["username"]' 
 [label]='"Username"'></app-formservice>
 <app-formservice [formControl]='registerForm.controls["password"]' 
-[label]='"password"'></app-formservice>
+[label]='"password"' [type]="'password'"></app-formservice>
 <app-formservice [formControl]='registerForm.controls["confirmPassword"]' 
-[label]='"Confirm Password"'></app-formservice>
+[label]='"Confirm Password"' [type]="'password'"></app-formservice>
+<app-formservice [formControl]='registerForm.controls["knownAs"]' 
+[label]='"knownAs"'></app-formservice>
+<app-formservice [formControl]='registerForm.controls["dateOfBirth"]' 
+[label]='"dateOfBirth"'></app-formservice>
+<app-formservice [formControl]='registerForm.controls["City"]' 
+[label]='"City"'></app-formservice>
+<app-formservice [formControl]='registerForm.controls["country"]' 
+[label]='"Country"'></app-formservice>
 <div> {{registerForm.value | json}}</div>
 <div> {{registerForm.status | json}}</div>

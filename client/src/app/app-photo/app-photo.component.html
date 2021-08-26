@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="member">
     <div class="col-2" *ngFor="let photo of member.photos">
         <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1">
         <div class="text-center">
@@ -62,12 +62,12 @@
         <div>
             <div>
                 Queue progress:
-                <div class="progress" style="">
+                <div class="progress">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': Uploader.progress + '%' }"></div>
                 </div>
             </div>
             <button type="button" class="btn btn-success btn-s"
-                    (click)="Uploader.uploadAll()" [disabled]="!Uploader.getNotUploadedItems().length">
+                    (click)="Uploader.uploadAll()" (click)="PhotoUpload(Uploader.photo)"[disabled]="!Uploader.getNotUploadedItems().length">
                 <span class="fa fa-upload"></span> Upload all
             </button>
             <button type="button" class="btn btn-warning btn-s"

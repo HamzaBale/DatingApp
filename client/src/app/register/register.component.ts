@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '_services/account.service';
@@ -25,7 +25,11 @@ export class RegisterComponent implements OnInit {
       {
         username: new FormControl("",[Validators.required]),
         password: new FormControl("",[Validators.required]),
-        confirmPassword:new FormControl("",[Validators.required,  this.matchValues("password")])
+        confirmPassword:new FormControl("",[Validators.required,  this.matchValues("password")]),
+        City:new FormControl("",[Validators.required]),
+        knownAs:new FormControl("",[Validators.required]),
+        country:new FormControl("",[Validators.required]),
+        dateOfBirth:new FormControl("",[Validators.required]),
       }
     )
     this.registerForm.controls.password.valueChanges.subscribe( ()=> this.registerForm.controls.confirmPassword.updateValueAndValidity())
@@ -40,8 +44,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+
   onSubmit(){
     console.log(this.registerForm.value);
-   // this.accountservice.register(this.model).subscribe(resp => console.log(resp));
+    this.accountservice.register(this.registerForm.value).subscribe(resp => console.log(resp));
   }
 }

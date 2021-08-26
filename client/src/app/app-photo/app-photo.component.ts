@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ɵɵtrustConstantResourceUrl } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileLikeObject, FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '_services/account.service';
 import { MemberService } from '_services/member.service';
@@ -13,6 +13,7 @@ import { Photo } from '../_models/photo';
 })
 export class AppPhotoComponent implements OnInit {
   @Output() picChanged = new EventEmitter<boolean>();
+  @Output() PhotoUploaded = new EventEmitter<FileLikeObject>();
   @Input() member:Member;
   baseUrl = environment.ApiUrl;
   Uploader: FileUploader;
@@ -22,6 +23,7 @@ export class AppPhotoComponent implements OnInit {
   ngOnInit(): void {
     let token;
      this.accountservice.currentUser$.subscribe(x => token = x?.token);
+
         this.Uploader = new FileUploader({
           url:this.baseUrl+"users/add-photo",
           authToken:"Bearer " + token,
@@ -38,6 +40,7 @@ export class AppPhotoComponent implements OnInit {
             if(response){
               const photo = JSON.parse(response);
               this.member.photos.push(photo);
+              this.PhotoUploaded.emit(photo.url);
             }
         }
   }
@@ -54,6 +57,5 @@ export class AppPhotoComponent implements OnInit {
   }
 
   deletePhoto(photo){}
-
 
 }
