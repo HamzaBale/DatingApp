@@ -137,8 +137,8 @@ namespace API.Controllers
                 var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
                 var photo  = user.Photos.FirstOrDefault(x=> x.Id == photoId);
                 user.Photos.Remove(photo);
+                if(photo == null) return BadRequest("photo not existing");
                 if(photo?.IsMain == true) user.Photos.FirstOrDefault(x=> x.Id != photoId).IsMain = true;
-                  _repo.Update(user);
                  return  await _repo.SaveAllAsync();
 
             }

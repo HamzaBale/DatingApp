@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavComponent } from './nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { MemberlistComponent } from './members/memberlist.component';
@@ -16,6 +16,7 @@ import { MemberPageComponent } from './member-page/member-page.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { AppPhotoComponent } from './app-photo/app-photo.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { FormserviceComponent } from './_formservice/formservice/formservice.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     MemberPageComponent,
     UpdateUserComponent,
     AppPhotoComponent,
+    FormserviceComponent,
 
   ],
   imports: [
@@ -37,8 +39,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    FileUploadModule 
-    
+    ReactiveFormsModule,
+    FileUploadModule ,
   ],
   providers: [{provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor, multi:true}],
   bootstrap: [AppComponent]
