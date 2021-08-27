@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { AccountService } from '_services/account.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class NavComponent implements OnInit {
 
   loggedIn:boolean = false;
 
-  constructor(public accountService:AccountService){
+  constructor(public accountService:AccountService, private route: Router){
 
   }
 
@@ -26,7 +27,7 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.model).subscribe(res => {
       
       this.loggedIn = true;
-
+      this.route.navigate(['matches']);
     }
     );    
     this.cancelRegistration.emit(true);

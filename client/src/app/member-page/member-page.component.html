@@ -2,8 +2,8 @@
 <div class="row" *ngIf="member">
 <div class="col">
    
-   <img src="{{member.photoUrl}}" >
-   <div class="card-body">
+   <img src="{{member.photoUrl || '/assets/user.png'}}" >
+   <div class="card-body"> 
     <div><p>{{member.introduction}}</p></div>
     <div>{{member.age}}</div>
     <div>{{member.city}}</div>
