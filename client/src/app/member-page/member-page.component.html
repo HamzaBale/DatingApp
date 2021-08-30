@@ -8,6 +8,10 @@
     <div>{{member.age}}</div>
     <div>{{member.city}}</div>
    </div>
-   <app-app-photo [member] = "member" (picChanged)="picChanged()" ></app-app-photo>
+   <div *ngIf="connectedUser === member.username" >
+      
+      <app-app-photo [member] = "member" (picChanged)="picChanged()"></app-app-photo>
+   </div>
+
    </div>
 </div>

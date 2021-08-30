@@ -24,25 +24,34 @@ namespace API.Controllers
         private readonly IUserRepository _repo;
         private readonly IMapper _autoMapper;
         private readonly ICloudinary _photoservice;
-
-        public UsersController(IUserRepository repo, IMapper autoMapper, ICloudinary cloudinary) //caso di injection serve per comunicare con il databse
+        private readonly DataContext _context;
+        public UsersController(IUserRepository repo, IMapper autoMapper, ICloudinary cloudinary,DataContext context) //caso di injection serve per comunicare con il databse
         {
             _photoservice = cloudinary;
 
             _repo = repo;
             _autoMapper = autoMapper;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<memberDto>>> GetUsersAsync(string token)
-        {
+        public async Task<ActionResult<IEnumerable<memberDto>>> GetUsersAsync([FromQuery]UserParams queryParams)
+        {   
+            var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
 
-            var users = await _repo.GetAllUsers();
+            if(string.IsNullOrEmpty(queryParams.Gender)){ 
+                queryParams.Gender = user.Gender == "male" ?  "female" :  "male";
+            } 
+    
+            queryParams.CurrentUsername = User.GetUsername();
+            var users = await _repo.GetAllUsers(queryParams);
 
-            IEnumerable<memberDto> tempMembers = _autoMapper.Map<IEnumerable<memberDto>>(users);
+            Response.addPaginationHeader(users.TotalPages,users.TotalCount,users.CurrentPage, users.PageSize);
 
 
-            return Ok(tempMembers);
+            
+
+            return Ok(users);
             //return Ok(await _repo.GetAllUsers()); //va messa in un Ok(Badrequest, Unauthorized) result affinchè sia una risposta http.
             //ActionResult<List<Appuser>> != List<AppUser>
 

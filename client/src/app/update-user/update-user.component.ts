@@ -7,7 +7,12 @@ import { Member } from '../_models/member';
 
 export interface UpdateMember{
   introduction:string,
-  username:string
+  username:string,
+  City:string,
+  Country:string,
+  Interests:string,
+  KnownAs:string,
+  LookingFor:string
 }
 
 @Component({
@@ -19,7 +24,15 @@ export class UpdateUserComponent implements OnInit {
 
   member:Member;
   user: User;
-
+  inputMember:UpdateMember = {
+    introduction:"",
+    username:"",
+    City:"",
+    Country:"",
+    Interests:"",
+    KnownAs:"",
+    LookingFor:""
+  };
   constructor(private memberservice:MemberService, public accountservice: AccountService) { }
   
   ngOnInit(): void {
@@ -29,7 +42,9 @@ export class UpdateUserComponent implements OnInit {
   }
 
   onSubmit(){
-      
+    this.member.username = this.inputMember.username;
+    this.member.introduction = this.inputMember.introduction;
+    this.member.knownAs = this.inputMember.KnownAs;
       this.memberservice.UpdateData(this.member).subscribe(data=> console.log("buon fine"));
       this.user.userName = this.member.username;
   }

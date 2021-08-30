@@ -16,6 +16,8 @@ namespace API.DTO
         public string country { get; set; }
 
         public string dateOfBirth { get; set; }
+        
+        public string Gender { get; set; }
 
     }
 }

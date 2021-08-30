@@ -40,7 +40,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services) //usato per injectare servizi in altre classi dell'app
         {   
             services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
-            
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddControllers();
             services.AddDbContext<DataContext>(options =>
             {

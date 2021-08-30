@@ -38,10 +38,11 @@ namespace API.Controllers
             user.UserName = register.username.ToLower();
             user.passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.password));
             user.passwordSalt = hmac.Key;
-            user.KnownAs = register.knownAs;
+            _automapper.Map(register,user);
+           /* user.KnownAs = register.knownAs;
             user.DateOfBirth = new DateTime().ToLocalTime();
             user.City = register.City;
-            user.Country = register.country;
+            user.Country = register.country;*/
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -59,7 +60,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDTO>> login(loginDTO login)
         {
             if (!(await this.IsPresent(login.name))) return Unauthorized("Username is Invalid");
-
+                
             var user = await _repo.GetUserByUsernameAsync(login.name);
 
             using var hmac = new HMACSHA512(user.passwordSalt);

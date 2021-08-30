@@ -17,7 +17,7 @@ import { UpdateUserComponent } from './update-user/update-user.component';
 import { AppPhotoComponent } from './app-photo/app-photo.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { FormserviceComponent } from './_formservice/formservice/formservice.component';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import { FormserviceComponent } from './_formservice/formservice/formservice.com
     UpdateUserComponent,
     AppPhotoComponent,
     FormserviceComponent,
-
+    
   ],
   imports: [
     BrowserModule,
@@ -41,6 +41,10 @@ import { FormserviceComponent } from './_formservice/formservice/formservice.com
     FormsModule,
     ReactiveFormsModule,
     FileUploadModule ,
+    PaginationModule.forRoot()
+  ],
+  exports:[
+    PaginationModule
   ],
   providers: [{provide:HTTP_INTERCEPTORS, useClass:JwtInterceptor, multi:true}],
   bootstrap: [AppComponent]

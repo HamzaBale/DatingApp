@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
         knownAs:new FormControl("",[Validators.required]),
         country:new FormControl("",[Validators.required]),
         dateOfBirth:new FormControl("",[Validators.required]),
+        Gender:new FormControl("",[Validators.required]),
       }
     )
     this.registerForm.controls.password.valueChanges.subscribe( ()=> this.registerForm.controls.confirmPassword.updateValueAndValidity())
