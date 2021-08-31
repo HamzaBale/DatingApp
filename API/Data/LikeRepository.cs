@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using API.DTO;
 using API.Entities;
 using API.Extensions;
+using API.helpers;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,31 +29,46 @@ namespace API.Data
             
         }
 
-        public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int userId)
+        public  PageList<LikeDto> GetUserLikes(LikeParams likeparams )
         {
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
         
-            if(predicate =="source"){
-                likes = likes.Where(like => like.SourceUserId == userId);//n righe dove sourceid == userid
+            if(likeparams.predicate =="source"){
+                likes = likes.Where(like => like.SourceUserId == likeparams.userId);//n righe dove sourceid == userid
 
                 users = likes.Select(like => like.LikedUser); //Select LikedUser from Likes Table.
                 //restiuirà n righe fatte solo da LikedUser che ricordo essere di tipo AppUser.
             }
-             if(predicate =="likedby"){
-                 likes = likes.Where(like => like.LikedUserId == userId);//n righe dove sourceid == userid
+             if(likeparams.predicate =="likedby"){
+                 likes = likes.Where(like => like.LikedUserId == likeparams.userId);//n righe dove sourceid == userid
 
                 users = likes.Select(like => like.SourceUser); //select lista di user che gli piacciono.
             }
-       
-            return await users.Select(user=> new LikeDto{
+            var us =  users.Select(user=> new LikeDto{
                 Username = user.UserName,
                 KnownAs = user.KnownAs,
                 Age = user.DateOfBirth.CalculateAge(),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
                 Id = user.Id
-            }).ToListAsync(); //stessa cosa di sopra. Prenderò le righe ritornate dalla select trasformo in lista.
+            }).AsEnumerable();
+            return PageList<LikeDto>.CreateAsync(us,likeparams.pageNumber,likeparams.pageSize);
+
+
+       
+           /* return await users.Select(user=> new LikeDto{
+                Username = user.UserName,
+                KnownAs = user.KnownAs,
+                Age = user.DateOfBirth.CalculateAge(),
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain).Url,
+                Id = user.Id
+            }).ToListAsync(); //stessa cosa di sopra. Prenderò le righe ritornate dalla select trasformo in lista.*/
+
         }
+         public UserLike DislikeUser(UserLike Disliked){
+
+                return  _context.Likes.Remove(Disliked).Entity;
+         }
 
         public async Task<AppUser> GetUserWithLikes(int userId) //return users that he liked
         {

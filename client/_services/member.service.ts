@@ -29,7 +29,7 @@ export class MemberService {
 
   members:Member[] = [];
   PaginatedResult: PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
-
+  //PaginatedResultLikes
   counter:number[] =[];
 
   memberCache = new Map();
@@ -60,7 +60,7 @@ export class MemberService {
     
    return this.http.get<Member[]>(this.BaseUrl+"users",{observe:'response',params}).pipe(
      map(response => {
-          console.log(response.body);
+          //console.log(response.body);
 
           this.PaginatedResult.result = response.body;
   
@@ -103,9 +103,23 @@ export class MemberService {
       return this.http.post(this.BaseUrl+"likes/"+username,{});
   }
 
-  public GetLikes(predicate){
-    return this.http.get<Partial<Member[]>>(this.BaseUrl+"likes/?predicate="+predicate);
+  public DislikeUser(username){
+    return this.http.post(this.BaseUrl+"likes/dislike/"+username,{});
   }
+
+  public GetLikes(predicate){
+    return this.http.get<Partial<Member[]>>(this.BaseUrl+"likes/?predicate="+predicate,{observe:'response'}).pipe(
+      map(response=> {
+       
+        this.PaginatedResult.result = response.body;
+        this.PaginatedResult.pagination = JSON.parse(response.headers.get("pagination"));
+        return this.PaginatedResult;
+      }
+        )
+    );
+  }
+
+
 
   
 }

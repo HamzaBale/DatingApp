@@ -22,6 +22,7 @@ export class MemberlistComponent implements OnInit {
     ToAge: 150,
 
   };
+  error;
   constructor(private memberservice:MemberService, private route:ActivatedRoute ) { }
 
   ngOnInit(): void {
@@ -43,7 +44,7 @@ export class MemberlistComponent implements OnInit {
     
 
   public GetMembers(page?:number,pageSize?:number, filters?:any){
-    console.log(filters);
+
          if(filters) this.filters = {
         page:page,
         pageSize:pageSize,
@@ -64,12 +65,11 @@ export class MemberlistComponent implements OnInit {
 
     this.memberservice.GetMembers(this.filters).subscribe(
       users => {
-        console.log(users);
+        
         this.users = users.result;
         this.pagination = users.pagination;
       }
-    )
-
+    ,error => this.error = error);
   }
 
   public pageChanged(event){
