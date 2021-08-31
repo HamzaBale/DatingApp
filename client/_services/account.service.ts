@@ -32,7 +32,7 @@ export class AccountService {
         if(response!= null) {
           localStorage.setItem('user',JSON.stringify(response));
           this.currentUserSource.next(response);
-          console.log(response);
+          
       }
       }
       )

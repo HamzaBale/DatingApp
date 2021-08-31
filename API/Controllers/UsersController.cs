@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [Authorize]
     public class UsersController : BaseApiController
     {

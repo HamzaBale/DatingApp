@@ -25,7 +25,11 @@ namespace API.Services
         {
            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()), //claims are used to create the token
+                //they are the "payload" of our token. Header + Payload + Secret Key = Token.
+                //When user tries to login => we create the token.
+                //When user tries to send Http request + token => we check if token is good by Recalculating the token
+                //Payload+header+secretKey
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             };
 

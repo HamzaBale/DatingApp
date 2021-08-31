@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   }
 
   CancelRegister(event:boolean){
-    console.log(this.loggedIn)
+
     this.loggedIn = event;
   }
 

@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+   // [Route("api/[controller]")]
     public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
@@ -37,7 +37,9 @@ namespace API.Controllers
             using var hmac = new HMACSHA512();
             user.UserName = register.username.ToLower();
             user.passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.password));
-            user.passwordSalt = hmac.Key;
+            user.passwordSalt = hmac.Key; //Salt is important. It gets appended to the passwordHash and creates new Hash
+            //in our case the salt is the key used to calculate the first hash
+
             _automapper.Map(register,user);
            /* user.KnownAs = register.knownAs;
             user.DateOfBirth = new DateTime().ToLocalTime();

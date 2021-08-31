@@ -32,6 +32,10 @@ namespace API.Entities
         //alla tabella Photos per collegarla con AppUser, non avremmo problemi del tipo " 1 foto non ha utenti",
         //poichè la foreignkey può essere nullable. "Cancellare un utente lascia le foto nel database".
 
+        public ICollection<UserLike> LikedByUser { get; set; } //many to many relationship
+        public ICollection<UserLike> LikedUser { get; set; }   //many to many relationship
+
+
         /*public int GetAge(){ //Extends Datetime affinchè abbia metodo che restituisca età
             return DateOfBirth.CalculateAge();
         }*/

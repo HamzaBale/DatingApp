@@ -28,7 +28,7 @@ namespace API.Data
         }
 
         public async Task<PageList<memberDto>> GetAllUsers(UserParams userParams)
-        {   
+        {    
             DateTime Mindob;
             DateTime Maxdob;
             var request =  _context.Users.Include(p => p.Photos).AsQueryable();
@@ -39,7 +39,7 @@ namespace API.Data
              request = request.Where(x=> DateTime.Compare(x.DateOfBirth, Mindob) < 0 && DateTime.Compare(x.DateOfBirth, Maxdob) > 0);
              var tempMembers = _autoMapper.Map<IEnumerable<memberDto>>(request);
            
-        
+                
             /*request = request.Where(u => u.UserName != userParams.CurrentUsername && u.Gender == userParams.Gender);
             var Mindob = DateTime.Today.AddYears(-userParams.MaxAge -1);
             var Maxdob = DateTime.Today.AddYears(-userParams.MinAge);
@@ -50,7 +50,7 @@ namespace API.Data
             .Take(userParams.pageSize).ToListAsync();
             userobj.count = count;*/
 
-            return await  PageList<memberDto>.CreateAsync(tempMembers,userParams.pageNumber,userParams.pageSize);
+            return  PageList<memberDto>.CreateAsync(tempMembers,userParams.pageNumber,userParams.pageSize);
         }
 
         public Task<IEnumerable<memberDto>> GetMembersAsync()
@@ -65,8 +65,9 @@ namespace API.Data
 
         public async Task<AppUser> GetUserByUsernameAsync(string userName)
         {
-            return await _context.Users.Include(x => x.Photos).
-            FirstOrDefaultAsync(user => user.UserName == userName.ToLower());
+            var s = await _context.Users.Include(x => x.Photos).
+            FirstOrDefaultAsync(user => user.UserName.ToLower() == userName.ToLower());
+            return s;
         }
 
         public async Task<bool> SaveAllAsync()

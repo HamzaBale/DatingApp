@@ -25,7 +25,7 @@ public PageList(IEnumerable<T> items,int pageNumber, int count, int pageSize)
             AddRange(items);
         }
 
-public static async Task<PageList<T>> CreateAsync(IEnumerable<T> source,int pageNumber,int pageSize ){
+public static  PageList<T> CreateAsync(IEnumerable<T> source,int pageNumber,int pageSize ){
 
     var count =  source.Count();
     var items =  source.Skip((pageNumber - 1 )*pageSize).Take(pageSize).ToList();

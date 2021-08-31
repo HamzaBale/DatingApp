@@ -40,7 +40,7 @@ export class AppPhotoComponent implements OnInit {
             if(response){
               const photo = JSON.parse(response);
               this.member.photos.push(photo);
-              console.log(photo);
+
               if(photo.isMain) this.setMainPhoto(photo);
               this.PhotoUploaded.emit(photo.url);
             }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MemberService } from '_services/member.service';
 
 @Component({
   selector: 'app-member-card',
@@ -7,9 +8,16 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MemberCardComponent implements OnInit {
   @Input() member;
-  constructor() { }
+  constructor(private memberservice: MemberService) { }
 
   ngOnInit(): void {
   }
 
+  LikeUser(username){
+      this.memberservice.LikeUser(username).subscribe(
+        ()=> console.log("you liked that user")
+      ,error =>{if(error.status != 200) console.log(error)
+      else console.log("you liked that user");}
+      );
+  }
 }
