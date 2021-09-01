@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,6 +9,7 @@ import { PaginatedResult } from 'src/app/_interfaces/PaginationI';
 import { UserParams } from 'src/app/_interfaces/Userparams';
 import { Member } from 'src/app/_models/member';
 import { environment } from 'src/environments/environment';
+import { Message, MessageParams } from '_types/Message';
 
 
 
@@ -29,10 +31,13 @@ export class MemberService {
 
   members:Member[] = [];
   PaginatedResult: PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
+  MessagesResult:PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
   //PaginatedResultLikes
   counter:number[] =[];
-
   memberCache = new Map();
+
+  messageCache = new Map();
+  messages:Message[];
 
 
   constructor(private http:HttpClient) { }
@@ -117,6 +122,31 @@ export class MemberService {
       }
         )
     );
+  }
+
+  public GetMessages(messageParams:MessageParams){
+    let params = new HttpParams();
+    var test = this.memberCache.get(Object.values(messageParams).join("-"));
+    if(test){
+      console.log("cached");
+      return of(test);
+    } 
+    
+    
+    if(messageParams.page) params = params.append("pageNumber",messageParams.page.toString());
+    if(messageParams.pageSize) params = params.append("pageSize",messageParams.pageSize.toString());
+  
+
+
+    return this.http.get<Message[]>(this.BaseUrl+"messages/?container="+messageParams.predicate,{observe:'response',params}).pipe(
+      map(response =>{
+        this.MessagesResult.result = response.body;
+        this.MessagesResult.pagination = JSON.parse(response.headers.get("pagination"));
+        this.memberCache.set(Object.values(messageParams).join("-"),{result:response.body,pagination:this.MessagesResult.pagination});
+        return this.MessagesResult;
+      })
+    );
+  
   }
 
 

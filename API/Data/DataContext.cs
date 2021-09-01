@@ -1,4 +1,6 @@
 
+using System;
+using System.Threading.Tasks;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,7 @@ namespace API.Data
       public DbSet<AppUser> Users { get; set; } //create a table named Users
 
       public DbSet<UserLike> Likes { get; set; }
+      public DbSet<Message> Messages { get; set; }
 
       protected override void OnModelCreating(ModelBuilder builder){ //in case of many to many relationship 
       //between the same entity
@@ -30,12 +33,24 @@ namespace API.Data
         builder.Entity<UserLike>().HasOne(s => s.LikedUser).WithMany(l => l.LikedByUser)//fa riferimento alla lista all'interno di Appuser
         .HasForeignKey(l=>l.LikedUserId).OnDelete(DeleteBehavior.Cascade);
         //1 user can be liked by many users.
+
+        builder.Entity<Message>().HasOne(u=> u.Recipient).WithMany(s => s.MessagesReceived).OnDelete(DeleteBehavior.Restrict);
+        builder.Entity<Message>().HasOne(u=> u.Sender).WithMany(s => s.MessagesSent).OnDelete(DeleteBehavior.Restrict);
+      
+
+
+
       }
 
+        internal Task<int> SaveAllAsync()
+        {
+            throw new NotImplementedException();
+        }
 
 
 
-      //public DbSet<AppUser> Casual { get; set; }
-    
+
+        //public DbSet<AppUser> Casual { get; set; }
+
     }
 }

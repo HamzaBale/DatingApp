@@ -19,6 +19,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FormserviceComponent } from './_formservice/formservice/formservice.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { LikesListComponent } from './likes-list/likes-list.component';
+import { MessageThreadComponent } from './message-thread/message-thread.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LikesListComponent } from './likes-list/likes-list.component';
     AppPhotoComponent,
     FormserviceComponent,
     LikesListComponent,
+    MessageThreadComponent,
     
   ],
   imports: [

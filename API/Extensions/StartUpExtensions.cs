@@ -36,6 +36,7 @@ namespace API.Extensions
             services.AddScoped<ICloudinary,PhotoService>();
             services.AddScoped<LogUserActivity>();
             services.AddScoped<ILikeRepository,LikeRepository>();
+            services.AddScoped<IMessageRepository,MessageRepository>();
             return services;
         }
     }

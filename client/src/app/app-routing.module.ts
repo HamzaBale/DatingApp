@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { LikesListComponent } from './likes-list/likes-list.component';
 import { MemberPageComponent } from './member-page/member-page.component';
 import { MemberlistComponent } from './members/memberlist.component';
+import { MessageThreadComponent } from './message-thread/message-thread.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { AuthenticationGuard } from './_guards/authentication.guard';
 
@@ -15,6 +16,7 @@ const routes: Routes = [
     {path:"memberedit", component:UpdateUserComponent,canActivate:[AuthenticationGuard]},
     {path:"update-photo/:username", component:AppPhotoComponent,canActivate:[AuthenticationGuard]},
     {path:"likes", component:LikesListComponent, canActivate:[AuthenticationGuard]},
+    {path:"messages", component:MessageThreadComponent, canActivate:[AuthenticationGuard]},
     {path:"**", component:HomeComponent, pathMatch:"full"}
    
 ];

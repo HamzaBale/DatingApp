@@ -1,0 +1,58 @@
+<p style="margin-top:200px;">message-thread works!</p>
+<div *ngIf="InboxMessages">
+      <input type="radio" id="Inbox" name="MessageType" value="Inbox" checked (change)="MessageViewChange($event)">
+      <label for="Inbox">Inbox</label><br>
+      <input type="radio" id="Outbox" name="MessageType" value="Outbox" (change)="MessageViewChange($event)">
+      <label for="Outbox">Outbox</label><br>
+      <input type="radio" id="Unread" name="MessageType" value="Unread" (change)="MessageViewChange($event)">
+      <label for="Unread">Unread</label>
+    <div *ngFor="let inMessage of InboxMessages" >
+    <div  style="width: 18rem;">
+    <div class="card" *ngIf="MessageType === 'Inbox' && username != inMessage.senderUsername">
+        <img class="card-img-top" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+        <div class="card-body">
+            <h6 class="card-title">{{inMessage.senderUsername}}</h6>
+            <p class="card-text">{{inMessage.content}}</p>
+            
+          </div>
+    </div>
+    </div>
+
+    <div  style="width: 18rem;">
+        <div class="card" *ngIf="MessageType === 'Outbox' && username == inMessage.senderUsername">
+            <img class="card-img-top" src={{inMessage.recipientPhotoUrl}} alt="Card image cap">
+            <div class="card-body">
+                <h6 class="card-title">{{inMessage.recipientUsername}}</h6>
+                <p class="card-text">{{inMessage.content}}</p>
+              </div>
+        </div>
+        </div>
+   
+    <div   style="width: 18rem;">
+        <div class="card" *ngIf="MessageType === 'Unread' && username != inMessage.senderUsername">
+            <img class="card-img-top" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+            <div class="card-body">
+                    <h6 class="card-title">{{inMessage.senderUsername}}</h6>
+                    <p class="card-text">{{inMessage.content}}</p>
+                  </div>
+            </div>
+            </div>
+        </div>
+
+
+
+  
+    <div class="d-flex justify-content-center" *ngIf="pagination">
+        <pagination 
+            [boundaryLinks]="true" 
+        [totalItems]="pagination.totalItems"
+            [itemsPerPage]="pagination.totalItemPerPage"
+            [(ngModel)]="pagination.CurrentPage"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" 
+            nextText="&rsaquo;" 
+            firstText="&laquo;" 
+            lastText="&raquo;">
+    </pagination>
+    </div> 
+</div>

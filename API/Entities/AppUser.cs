@@ -35,6 +35,9 @@ namespace API.Entities
         public ICollection<UserLike> LikedByUser { get; set; } //many to many relationship
         public ICollection<UserLike> LikedUser { get; set; }   //many to many relationship
 
+        public ICollection<Message> MessagesSent { get; set; } 
+        public ICollection<Message> MessagesReceived{ get; set; } 
+
 
         /*public int GetAge(){ //Extends Datetime affinchè abbia metodo che restituisca età
             return DateOfBirth.CalculateAge();

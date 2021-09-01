@@ -95,7 +95,10 @@ la sua primary key era formata dalla coppia new \{sourceId,LikedId\}\par
 Nella tabella AppUser abbiamo messo 2 collezioni di tipo UserLike, che tenevano le coppie di Id => sourceId, LikedId.\par
  Questo ci \'e8 stato utile quando saremmo andati a prendere gli AppUser a cui abbiamo messo "mi piace". Cio\'e8 le coppie <1,2> cio\'e8 utente 1 ha messo mi piace a utente 2. Nella lista SourceUsers avr\'f2 una lista di coppie che inizano con <1,x>.\par
 Nella lista LikedbyUsers avr\'f2 una lista di coppie fatte da <x,1> con 1 id dell'utente loggato.\par
-\par
+\fs22 --------------------------------------------------------------------------------------------------------------------------\par
+Differenza importante tra Iqueryable e Ienumbareble:\par
+1) IQuearyable \'e8 pi\'f9 efficente quando si tratta di fare chiamate al database (riporta solo le righe che ci interessano)\par
+2) Se IEnumerable da problemi con WHERE (RICORDA WHERE SEMPRE). USARE IQUERYABLE.\fs24\par
 \par
 \par
 \par
