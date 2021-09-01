@@ -124,7 +124,8 @@ export class MemberService {
     );
   }
 
-  public GetMessages(messageParams:MessageParams){
+  public GetMessages(messageParams:MessageParams){ //dovresti creare un nuovo Service, fatto apposta per 
+    //Messaggi.
     let params = new HttpParams();
     var test = this.memberCache.get(Object.values(messageParams).join("-"));
     if(test){
@@ -148,8 +149,14 @@ export class MemberService {
     );
   
   }
+  public SendMessage(RecipientUsername,Content){
+    return this.http.post(this.BaseUrl+"messages",{RecipientUsername:RecipientUsername,Content:Content});
+  }
 
+  public DeleteMessage(messageId:number){
+    console.log(messageId);
+    return this.http.delete(this.BaseUrl+"messages/"+messageId);
 
-
+  }
   
 }

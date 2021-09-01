@@ -1,5 +1,16 @@
-<p style="margin-top:200px;">message-thread works!</p>
+<h3 style="margin-top: 70px;text-align: center;">Here you can see your messages !</h3>
+<div>
+    <strong>Send new Message</strong>
+    <form (ngSubmit)="SendMessage()">
+        <input name="content" class="form-control" type="text" placeholder="Message" 
+        [(ngModel)]="sendMex.Content">
+        <input name="recipient" class="form-control" type="text" placeholder="To Who"
+        [(ngModel)]="sendMex.RecipientUsername">
+        <button type="submit" class="btn btn-success">Send</button>
+    </form>
+</div>
 <div *ngIf="InboxMessages">
+
       <input type="radio" id="Inbox" name="MessageType" value="Inbox" checked (change)="MessageViewChange($event)">
       <label for="Inbox">Inbox</label><br>
       <input type="radio" id="Outbox" name="MessageType" value="Outbox" (change)="MessageViewChange($event)">
@@ -9,7 +20,7 @@
     <div *ngFor="let inMessage of InboxMessages" >
     <div  style="width: 18rem;">
     <div class="card" *ngIf="MessageType === 'Inbox' && username != inMessage.senderUsername">
-        <img class="card-img-top" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+        <img class="rounded-circle" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
         <div class="card-body">
             <h6 class="card-title">{{inMessage.senderUsername}}</h6>
             <p class="card-text">{{inMessage.content}}</p>
@@ -19,8 +30,13 @@
     </div>
 
     <div  style="width: 18rem;">
-        <div class="card" *ngIf="MessageType === 'Outbox' && username == inMessage.senderUsername">
-            <img class="card-img-top" src={{inMessage.recipientPhotoUrl}} alt="Card image cap">
+        <div class="card" *ngIf="MessageType === 'Outbox' && inMessage &&
+        username === inMessage.senderUsername">
+           <span> 
+            <img class="rounded-circle" src="{{inMessage.recipientPhotoUrl || '/assets/user.png'}}" alt="Card image cap"
+            style="display: inline;">
+            <i class="far fa-trash-alt" (click)="DeleteMessage(inMessage)" style="float:right;margin:15px"></i>
+           </span> 
             <div class="card-body">
                 <h6 class="card-title">{{inMessage.recipientUsername}}</h6>
                 <p class="card-text">{{inMessage.content}}</p>
@@ -30,7 +46,7 @@
    
     <div   style="width: 18rem;">
         <div class="card" *ngIf="MessageType === 'Unread' && username != inMessage.senderUsername">
-            <img class="card-img-top" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+            <img class="rounded-circle" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
             <div class="card-body">
                     <h6 class="card-title">{{inMessage.senderUsername}}</h6>
                     <p class="card-text">{{inMessage.content}}</p>
@@ -40,9 +56,10 @@
         </div>
 
 
+   
 
   
-    <div class="d-flex justify-content-center" *ngIf="pagination">
+    <div class="d-flex justify-content-center" *ngIf="pagination && pagination.totalItems > 0">
         <pagination 
             [boundaryLinks]="true" 
         [totalItems]="pagination.totalItems"

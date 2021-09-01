@@ -46,10 +46,10 @@ namespace API.Data
             .AsQueryable();
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.Recipient.UserName == messageParams.Username ),
-                "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username),
+                "Inbox" => query.Where(u => u.Recipient.UserName == messageParams.Username && u.RecipientDeleted == false),
+                "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username && u.SenderDeleted == false),
                 _ => query.Where(u => u.Recipient.UserName ==
-                    messageParams.Username && u.DateRead == null)
+                    messageParams.Username && u.DateRead == null && u.RecipientDeleted == false)
             };
 
             var queryDto = _automapper.Map<IEnumerable<Message>,IEnumerable<MessageDto>>(query.AsEnumerable());
@@ -64,8 +64,9 @@ namespace API.Data
             var messages =await  query
             .Include(x => x.Sender).ThenInclude(p => p.Photos)
             .Include(x => x.Recipient).ThenInclude(p => p.Photos)
-            .Where(message => message.SenderUsername.ToLower() == CurrentUsername.ToLower()  && message.RecipientUsername.ToLower()  == RecipientUsername.ToLower() ||
-            message.SenderUsername.ToLower() == RecipientUsername.ToLower() && message.RecipientUsername.ToLower() == CurrentUsername.ToLower())
+            .Where(message => message.SenderUsername.ToLower() == CurrentUsername.ToLower()  && message.RecipientUsername.ToLower()  == RecipientUsername.ToLower() 
+            && message.RecipientDeleted == false||
+            message.SenderUsername.ToLower() == RecipientUsername.ToLower() && message.RecipientUsername.ToLower() == CurrentUsername.ToLower() && message.SenderDeleted == false)
             .ToListAsync();
             //Select(*) from Messages Where message.senderusername = currentusername && message.RecipientUsername == RecipientUsername.
             //Errore stavo dicendo che il sender deve essere anche il recipient. Bisogna usare l'or.

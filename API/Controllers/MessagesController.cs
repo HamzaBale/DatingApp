@@ -70,6 +70,29 @@ namespace API.Controllers
 
          }
         
+        [HttpDelete("{messageId}")]
+         public async Task<ActionResult<MessageDto>> DeleteMessage(int messageId){
+
+                var message = await _messageRepository.GetMessage(messageId);
+                if(message == null) return BadRequest("no message with this id");
+                if(message.SenderUsername.ToLower() != User.GetUsername().ToLower() && 
+                    message.RecipientUsername.ToLower() != User.GetUsername().ToLower()) return Unauthorized("Who's You???");
+                if(User.GetUsername().ToLower() == message.SenderUsername){ 
+                    message.SenderDeleted = true;
+                if(message.DateRead == null || message.RecipientDeleted == true)
+                 _messageRepository.DeleteMessage(message); 
+                }
+                else if(User.GetUsername().ToLower() == message.RecipientUsername) {
+                    message.RecipientDeleted = true;
+                 if(message.SenderDeleted == true) _messageRepository.DeleteMessage(message); 
+                }
+                
+                
+                await _messageRepository.SaveAllAsync();
+                return _automapper.Map<MessageDto>(message);
+         }
+        
+        
 
 
 
