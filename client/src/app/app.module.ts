@@ -20,6 +20,7 @@ import { FormserviceComponent } from './_formservice/formservice/formservice.com
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { LikesListComponent } from './likes-list/likes-list.component';
 import { MessageThreadComponent } from './message-thread/message-thread.component';
+import { AdminComponent } from './Admin/admin.component'
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MessageThreadComponent } from './message-thread/message-thread.componen
     FormserviceComponent,
     LikesListComponent,
     MessageThreadComponent,
+    AdminComponent,
     
   ],
   imports: [

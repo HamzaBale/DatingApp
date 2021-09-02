@@ -1,0 +1,13 @@
+<p style ="margin-top:70px">admin works!</p>
+<div  class="grid" style="display: grid; grid-template-columns: 25% 25% 25%" >
+  <div class="column"  *ngFor="let user of users" >
+    <form >
+    <select style="max-width: 125px;max-height: 100px;" id="roles" (change)="ChangeRole(user.id,$event.target.value)">
+      <option value="Admin" >Admin</option>
+      <option value="Moderator" >Moderator</option>
+      <option value="Member" >Member</option>
+    </select>
+    <button type="submit" class="btn btn-success"  style="font-size: 12px;">{{user.username}} </button>
+    </form>
+    </div>
+</div>

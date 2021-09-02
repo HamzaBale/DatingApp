@@ -38,7 +38,9 @@ export class UpdateUserComponent implements OnInit {
   ngOnInit(): void {
  
     this.accountservice.currentUser$.pipe(take(1)).subscribe(x =>{ this.user =  x;});
-   this.memberservice.GetMember(this.user.userName).subscribe(x =>  this.member = x);
+   this.memberservice.GetMember(this.user.userName).subscribe(x => {this.member = x
+  console.log(x);
+  });
   }
 
   onSubmit(){

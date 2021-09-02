@@ -9,5 +9,16 @@
     <input type="text" placeholder="Set New IntroDuction" [(ngModel)]="inputMember.introduction" name="introduction" >
     <button class="btn btn-outline-success" type="submit">update User</button>
 </form>
+<div class="row">
+<img src="{{member?.photoUrl}}"  class="col" style="max-width: 400px; max-height: 400px;" > 
+<span class="col" >
+    <h4>{{member?.username}}</h4>
+    <p style="font-size: large;" class="col" style="border: red;border-style: dotted;">Introduction:{{member?.introduction}}</p>
+</span>
+</div>
+<div class="row">
+    <h5 style="font-size: large;" class="col">Country:{{member?.country}}</h5> 
+</div>
+<div style="border: aqua;border-style: solid;"> Interesets: {{member?.interests}} </div>
 
 </div>
