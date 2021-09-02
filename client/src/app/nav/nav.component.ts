@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AccountService } from '_services/account.service';
+import { User } from '_types/User';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +12,7 @@ import { AccountService } from '_services/account.service';
 export class NavComponent implements OnInit {
   @Output() cancelRegistration = new EventEmitter<boolean>();
   model: any = {};
-
+  user:User;
   loggedIn:boolean = false;
 
   constructor(public accountService:AccountService, private route: Router){
@@ -40,6 +41,9 @@ export class NavComponent implements OnInit {
   }
 
   getCurrentUser(){
-    this.accountService.currentUser$.subscribe(user => this.loggedIn = !!user);
+    this.accountService.currentUser$.subscribe(user => {this.loggedIn = !!user;
+    this.user = user;
+    console.log(this.user)
+    });
   }
 }

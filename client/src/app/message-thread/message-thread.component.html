@@ -21,6 +21,7 @@
     <div  style="width: 18rem;">
     <div class="card" *ngIf="MessageType === 'Inbox' && username != inMessage.senderUsername">
         <img class="rounded-circle" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+        <i class="far fa-trash-alt" (click)="DeleteMessage(inMessage)" style="float:right;margin:15px"></i>
         <div class="card-body">
             <h6 class="card-title">{{inMessage.senderUsername}}</h6>
             <p class="card-text">{{inMessage.content}}</p>
@@ -47,6 +48,7 @@
     <div   style="width: 18rem;">
         <div class="card" *ngIf="MessageType === 'Unread' && username != inMessage.senderUsername">
             <img class="rounded-circle" src={{inMessage.senderPhotoUrl}} alt="Card image cap">
+            <i class="far fa-trash-alt" (click)="DeleteMessage(inMessage)" style="float:right;margin:15px"></i>
             <div class="card-body">
                     <h6 class="card-title">{{inMessage.senderUsername}}</h6>
                     <p class="card-text">{{inMessage.content}}</p>

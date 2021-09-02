@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Entities;
 using API.Extensions;
 using API.helpers;
 using API.Interfaces;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +45,21 @@ namespace API
             services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+            services.AddIdentityCore<AppUser>(opt => {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+                }).AddRoles<AppRole>()
+              .AddRoleManager<RoleManager<AppRole>>()
+              .AddSignInManager<SignInManager<AppUser>>()
+              .AddRoleValidator<RoleValidator<AppRole>>()
+              .AddEntityFrameworkStores<DataContext>();
+            
+            services.AddAuthorization(
+                opt =>{ opt.AddPolicy("RequiredAdminRole",policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequiredModeratorRole",policy => policy.RequireRole("Admin","Moderator"));}
+            );
+
             services.AddControllers();
             services.AddDbContext<DataContext>(options =>
             {

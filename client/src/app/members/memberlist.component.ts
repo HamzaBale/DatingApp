@@ -2,6 +2,7 @@ import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from 'src/app/_models/member';
+import { AccountService } from '_services/account.service';
 import { MemberService } from '_services/member.service';
 import { PaginatedResult, pagination,  } from '../_interfaces/PaginationI';
 import { UserParams } from '../_interfaces/Userparams';
@@ -16,23 +17,27 @@ export class MemberlistComponent implements OnInit {
   pagination: pagination;
   pageNumber:number = 1;
   pageSize:number = 2;
-  filters:UserParams = {
-    Gender : "male",
-    FromAge : 18,
-    ToAge: 150,
-
-  };
+  filters : {
+    page?:number;
+    pageSize?:number,
+    Gender?:string,
+    FromAge?:number,
+    ToAge?:number
+  } = {};
   error;
-  constructor(private memberservice:MemberService, private route:ActivatedRoute ) { }
+  gender;
+  loaded:boolean = true;
+  constructor(private memberservice:MemberService, private route:ActivatedRoute,private accountService:AccountService ) { }
 
   ngOnInit(): void {
     let user = JSON.parse(localStorage.getItem("user"));
+    console.log(user);
 
-    /*this.memberservice.GetMember(user.userName).subscribe(us => 
-      this.Male = us.gender == "Male" ? true : false
-      );*/
-
-    this.GetMembers(this.pageNumber, this.pageSize);
+      this.gender = user.Gender == "male" ? "female" : "male";
+      this.filters.Gender = this.gender;
+      this.filters.FromAge = 18;
+      this.filters.ToAge = 140;
+      this.GetMembers(this.pageNumber, this.pageSize,this.filters);
 
   }
 
@@ -56,9 +61,6 @@ export class MemberlistComponent implements OnInit {
       this.filters = {
         page:page,
         pageSize:pageSize,
-        Gender : "male",
-        FromAge : 18,
-        ToAge: 150,
       }
     }
 
@@ -68,15 +70,16 @@ export class MemberlistComponent implements OnInit {
         
         this.users = users.result;
         this.pagination = users.pagination;
+        this.loaded = true;
       }
     ,error => this.error = error);
   }
 
   public pageChanged(event){
-    
+    this.loaded = false;
     this.pageNumber = event.page;
   
-    this.GetMembers(this.pageNumber,this.pageSize);
+    this.GetMembers(this.pageNumber,this.pageSize,this.filters);
 
   }
 

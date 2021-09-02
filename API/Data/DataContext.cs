@@ -2,18 +2,25 @@
 using System;
 using System.Threading.Tasks;
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class DataContext : DbContext //dbcontext is a bridge between our entity and the database.
+    public class DataContext : IdentityDbContext<AppUser,AppRole,int, IdentityUserClaim<int>, AppUserRole,
+    IdentityUserLogin<int>,IdentityRoleClaim<int>,IdentityUserToken<int>>
+
+
+    
+     //:DbContext//dbcontext is a bridge between our entity and the database.
     //layer of abstraction helping us quering and storing data in database
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
 
-      public DbSet<AppUser> Users { get; set; } //create a table named Users
+      //public DbSet<AppUser> Users { get; set; } //create a table named Users, IdentityDbcontext overrides it
 
       public DbSet<UserLike> Likes { get; set; }
       public DbSet<Message> Messages { get; set; }
@@ -36,7 +43,12 @@ namespace API.Data
 
         builder.Entity<Message>().HasOne(u=> u.Recipient).WithMany(s => s.MessagesReceived).OnDelete(DeleteBehavior.Restrict);
         builder.Entity<Message>().HasOne(u=> u.Sender).WithMany(s => s.MessagesSent).OnDelete(DeleteBehavior.Restrict);
-      
+
+        builder.Entity<AppUser>().HasMany(src => src.UserRoles)
+        .WithOne(rec => rec.User).HasForeignKey(x=> x.UserId).IsRequired();
+        
+        builder.Entity<AppRole>().HasMany(src => src.UserRoles)
+        .WithOne(rec => rec.Role).HasForeignKey(x=> x.RoleId).IsRequired();
 
 
 

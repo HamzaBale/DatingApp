@@ -20,6 +20,10 @@
                 </li>
               </ul>
               <div class="dropdown" *ngIf="accountService.currentUser$ | async">
+                <span style="color:aliceblue">Welcome {{user.userName}}</span>
+                <span><img src="{{user.photoUrl || '/assets/user.png'}}" class="img-thumbnail"
+                  style="max-height: 50px;"
+                  > </span>
                 <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
               </div>
               <form class="d-flex" (ngSubmit)="login()" autocomplete="off" *ngIf="!(accountService.currentUser$ | async)">

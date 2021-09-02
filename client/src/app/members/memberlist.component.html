@@ -17,7 +17,7 @@
     </div>
  
 </div>
-<div class="d-flex justify-content-center" *ngIf="pagination">
+<div class="d-flex justify-content-center" *ngIf="pagination && pagination.totalItems > 0 && loaded">
     <pagination 
         [boundaryLinks]="true" 
     [totalItems]="pagination.totalItems"

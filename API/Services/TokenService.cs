@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,16 +16,19 @@ namespace API.Services
     public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
+        private readonly IConfiguration config;
+        private readonly UserManager<AppUser> _userManager;
 
-
-        public TokenService(IConfiguration config)
+        public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
-
+            this.config = config;
+            _userManager = userManager;
         }
 
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user)
         {
+            var roles = await _userManager.GetRolesAsync(user);
            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()), //claims are used to create the token
@@ -31,8 +37,10 @@ namespace API.Services
                 //When user tries to send Http request + token => we check if token is good by Recalculating the token
                 //Payload+header+secretKey
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-            };
 
+            
+            };
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role,role)));
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor

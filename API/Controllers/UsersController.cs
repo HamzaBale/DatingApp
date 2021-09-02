@@ -34,6 +34,7 @@ namespace API.Controllers
             _context = context;
         }
 
+       // [Authorize(policy:"RequiredModeratorRole")] COME SETTARE I RUOLI
         [HttpGet]
         public async Task<ActionResult<IEnumerable<memberDto>>> GetUsersAsync([FromQuery]UserParams queryParams)
         {   

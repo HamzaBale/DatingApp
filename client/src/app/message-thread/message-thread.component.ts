@@ -20,7 +20,7 @@ export class MessageThreadComponent implements OnInit {
   constructor(private accountservice:AccountService, private memberservice:MemberService) { }
   
   ngOnInit(): void {
-    this.accountservice.currentUser$.subscribe(x => this.username = x.userName )
+    this.accountservice.currentUser$.subscribe(x => this.username = x?.userName )
     this.memberservice.GetMessages({predicate:this.MessageType,page:this.Page}).subscribe(x=> {
       console.log(x);
       this.InboxMessages = x.result;

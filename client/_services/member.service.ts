@@ -45,10 +45,10 @@ export class MemberService {
   public GetMembers(userParams:UserParams){
    
     let params = new HttpParams();
-    var response = this.memberCache.get(Object.values(userParams).join("-"))
-
+    var response = this.memberCache.get(Object.values(userParams).join("-"));
+    console.log(Object.values(userParams).join("-"));
     if(response) {
-      
+      console.log("cached");
       return of(response);
     }
 
@@ -113,7 +113,7 @@ export class MemberService {
   }
 
   public GetLikes(predicate){
-    return this.http.get<Partial<Member[]>>(this.BaseUrl+"likes/?predicate="+predicate,{observe:'response'}).pipe(
+    return this.http.get<Partial<Member[]>>(this.BaseUrl+"likes/?predicate="+predicate.text+"&PageNumber="+predicate.PageNumber+"&PageSize="+predicate.PageSize,{observe:'response'}).pipe(
       map(response=> {
        
         this.PaginatedResult.result = response.body;

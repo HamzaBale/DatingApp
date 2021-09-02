@@ -53,9 +53,9 @@ namespace API.Data
             return  PageList<memberDto>.CreateAsync(tempMembers,userParams.pageNumber,userParams.pageSize);
         }
 
-        public Task<IEnumerable<memberDto>> GetMembersAsync()
+        public async Task<IEnumerable<AppUser>> GetMembersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users.Include(src => src.Photos).ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
@@ -65,9 +65,9 @@ namespace API.Data
 
         public async Task<AppUser> GetUserByUsernameAsync(string userName)
         {
-            var s = await _context.Users.Include(x => x.Photos).
+            var user = await _context.Users.Include(x => x.Photos).
             FirstOrDefaultAsync(user => user.UserName.ToLower() == userName.ToLower());
-            return s;
+            return user;
         }
 
         public async Task<bool> SaveAllAsync()
