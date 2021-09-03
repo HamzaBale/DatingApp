@@ -8,18 +8,24 @@ import { AdminService } from '_services/admin.service';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  selected;
+  selected=[];
   users;
   constructor(private AdminService:AdminService) { }
 
   ngOnInit(): void {
-      this.AdminService.getAllUserWithRoles().subscribe(x=>this.users = x);
-    
+    this.selected =[];
+      this.AdminService.getAllUserWithRoles().subscribe(x=>{this.users = x
+        console.log(this.users);});
+     
   }
-  ChangeRole(id,event){
+  ChangeRole(){
  
-        console.log(id,event);
+       console.log(this.selected);
   }
 
+  ChangeRoleSelect(id,val){
+    console.log(id,val);
+    this.selected.push({id:id,val:val});
+  }
 
 }

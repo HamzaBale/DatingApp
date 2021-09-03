@@ -55,7 +55,7 @@ namespace API.Controllers
                 if(user == null) return BadRequest("can't find this user");
 
                  //var ExRole = user.UserRoles.Select(x => x.Role.Name); questo per me nel caso volessi togliere permessi che gia aveva.
-            var res = new IdentityResult {};
+             var res = new IdentityResult {};
              if(roleParams.Edit == "remove") {
                  return Ok(await _userManager.RemoveFromRolesAsync(user,roleParams.role));
            

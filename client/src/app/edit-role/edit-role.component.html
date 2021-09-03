@@ -1,0 +1,20 @@
+
+<div  style="margin-top: 80px;">
+    Change {{username}} Roles
+</div>
+
+<select (change)="SelectChangedAdd($event.target.value)">
+    <option>Choose Role</option>
+    <option value="Admin" *ngIf="ThisRoleAvailable('Admin')">Admin</option>
+    <option value="Moderator"  *ngIf="ThisRoleAvailable('Moderator')">Moderator</option>
+    <option value="Member"  *ngIf="ThisRoleAvailable('Member')">Member</option>
+</select>
+<button (click)="ChangeRole('add')" class="btn btn-success">Add Role</button>
+
+<select (change)="SelectChangedRemove($event.target.value)">
+    <option>Choose Role</option>
+    <option value="Admin" *ngIf="!ThisRoleAvailable('Admin')">Admin</option>
+    <option value="Moderator"  *ngIf="!ThisRoleAvailable('Moderator')">Moderator</option>
+    <option value="Member"  *ngIf="!ThisRoleAvailable('Member')">Member</option>
+</select>
+<button (click)="ChangeRole('remove')" class="btn btn-danger">Remove Role</button>
